@@ -1,0 +1,393 @@
+/* Styles de la page d'accueil (landing) */
+
+html {
+  scroll-behavior: smooth;
+}
+
+[id] {
+  scroll-margin-top: 5rem;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+.map-bg {
+  background-color: #f4f7f5;
+  background-image:
+    linear-gradient(#e6ece8 1px, transparent 1px),
+    linear-gradient(90deg, #e6ece8 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.hero-bg {
+  background: linear-gradient(180deg, #eef2ef 0%, #ffffff 100%);
+  background-image:
+    linear-gradient(#e4eae6 1px, transparent 1px),
+    linear-gradient(90deg, #e4eae6 1px, transparent 1px),
+    linear-gradient(180deg, #eef2ef, #fff);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+}
+
+.tab-active {
+  background: #16a34a;
+  color: #fff;
+}
+
+/* ============ ANIMATIONS & TRANSITIONS ============ */
+:root {
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --dur: .65s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(.88); }
+  65% { transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes floatyAlt {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(12px); }
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(.8); opacity: .5; }
+  70% { transform: scale(1.3); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+.pop-in {
+  animation: popIn .5s var(--ease) both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  will-change: opacity, transform;
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-left {
+  transform: translateX(-32px);
+}
+
+.reveal-right {
+  transform: translateX(32px);
+}
+
+.reveal-zoom {
+  transform: scale(.92);
+}
+
+/* Hero : rythme plus lent et plus doux */
+#accueil .reveal {
+  --dur: 1.15s;
+  transition-timing-function: cubic-bezier(.16, .9, .3, 1);
+  transform: translateY(38px);
+}
+
+#accueil .reveal-zoom {
+  transform: scale(.88);
+  transition-delay: .14s;
+}
+
+/* La révélation doit reprendre la main sur les réglages spécifiques du hero. */
+#accueil .reveal.is-in,
+#accueil .reveal-zoom.is-in {
+  transform: none;
+}
+
+#accueil h1 {
+  transition-delay: .06s;
+}
+
+#accueil h1 + p {
+  transition-delay: .22s;
+}
+
+#accueil .mt-8 {
+  transition-delay: .34s;
+}
+
+#accueil .halo {
+  animation-duration: 5s;
+}
+
+#accueil .float {
+  animation-duration: 6.8s;
+}
+
+#accueil .float-alt {
+  animation-duration: 8.2s;
+}
+
+.float {
+  animation: floaty 5s ease-in-out infinite;
+}
+
+.float-alt {
+  animation: floatyAlt 6.5s ease-in-out infinite;
+}
+
+.spin-slow {
+  animation: spinSlow 26s linear infinite;
+}
+
+#progress {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .1s linear;
+}
+
+#siteHeader {
+  transition: box-shadow .4s var(--ease);
+}
+
+#siteHeader.scrolled {
+  box-shadow: 0 8px 30px -12px rgba(17, 17, 17, .22);
+}
+
+#siteHeader .nav-link {
+  position: relative;
+  transition: color .3s var(--ease);
+}
+
+#siteHeader .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  background: #16a34a;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .4s var(--ease);
+}
+
+#siteHeader .nav-link:hover::after,
+#siteHeader .nav-link.active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.ul-link {
+  position: relative;
+  transition: color .3s var(--ease);
+}
+
+.ul-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .4s var(--ease);
+}
+
+.ul-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.lift {
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease), border-color .4s var(--ease);
+}
+
+.lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 44px -22px rgba(17, 17, 17, .38);
+}
+
+.lift .lift-icon {
+  transition: transform .45s var(--ease);
+}
+
+.lift:hover .lift-icon {
+  transform: scale(1.12) rotate(-6deg);
+}
+
+.btn-landing {
+  position: relative;
+  overflow: hidden;
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), background-color .35s var(--ease);
+}
+
+.btn-landing::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, .38) 50%, transparent 80%);
+  transform: translateX(-130%);
+  transition: transform .75s var(--ease);
+}
+
+.btn-landing:hover::after {
+  transform: translateX(130%);
+}
+
+.btn-landing:hover {
+  transform: translateY(-3px);
+}
+
+.btn-landing:active {
+  transform: translateY(-1px) scale(.98);
+}
+
+#mobileNav {
+  animation: fadeUp .4s var(--ease) both;
+}
+
+#burger {
+  transition: transform .35s var(--ease), background-color .3s var(--ease);
+}
+
+#burger:hover {
+  background: #f3f4f6;
+}
+
+#burger.open {
+  transform: rotate(90deg);
+}
+
+[data-tab] {
+  transition: background-color .35s var(--ease), color .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+#tabContent {
+  transition: opacity .35s var(--ease), transform .35s var(--ease);
+}
+
+#tabContent.swap {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.faq {
+  transition: box-shadow .4s var(--ease);
+}
+
+.faq[open] {
+  box-shadow: 0 18px 40px -22px rgba(17, 17, 17, .35);
+}
+
+.faq summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: color .3s var(--ease);
+  cursor: pointer;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary:hover {
+  color: #16a34a;
+}
+
+.faq .chev {
+  flex: none;
+  transition: transform .45s var(--ease), color .3s var(--ease);
+}
+
+.faq[open] .chev {
+  transform: rotate(180deg);
+  color: #16a34a;
+}
+
+.faq .faq-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .5s var(--ease), opacity .4s var(--ease);
+}
+
+.faq[open] .faq-body {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.faq .faq-body > div {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.halo {
+  animation: pulseRing 3.2s ease-out infinite;
+}
+
+#toTop {
+  opacity: 0;
+  transform: translateY(16px) scale(.85);
+  pointer-events: none;
+  transition: opacity .4s var(--ease), transform .4s var(--ease), background-color .3s var(--ease);
+}
+
+#toTop.show {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+#toTop:hover {
+  background: #12883f;
+}
+
+#stocks tbody tr {
+  transition: background-color .3s var(--ease);
+}
+
+#stocks tbody tr:hover {
+  background: #f9fafb;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

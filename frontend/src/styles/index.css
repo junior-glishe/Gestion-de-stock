@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "./app.css";
+@import "./landing.css";
+@import "./login.css";
+
+@theme {
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand: #16a34a;
+  --color-brand-dark: #12883f;
+  --color-brand-light: #e3f5ea;
+  --color-banner: #34a862;
+  --color-ink: #111111;
+  --color-footer: #2b2d31;
+}

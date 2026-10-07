@@ -1,0 +1,159 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum RoleUtilisateur {
+  ADMINISTRATEUR
+  GESTIONNAIRE
+  SUPERVISEUR
+}
+
+enum TypeMouvement {
+  ENTREE
+  SORTIE
+}
+
+model Utilisateur {
+  id         Int             @id @default(autoincrement()) @map("id_utilisateur")
+  nom        String          @db.VarChar(100)
+  prenom     String          @db.VarChar(100)
+  email      String          @unique @db.VarChar(150)
+  motDePasse String          @map("mot_de_passe") @db.VarChar(255)
+  statut     Boolean         @default(true)
+  role       RoleUtilisateur @default(GESTIONNAIRE) @map("role_utilisateur")
+
+  fournisseurs Fournisseur[]
+  categories   Categorie[]
+  produits     Produit[]
+  mouvements   MouvementStock[]
+  inventaires  Inventaire[]
+
+  @@map("utilisateur")
+}
+
+model Fournisseur {
+  id               Int         @id @default(autoincrement()) @map("id_fournisseur")
+  raisonSociale    String      @map("raison_sociale") @db.VarChar(150)
+  codeFournisseur  String      @unique @map("code_fournisseur") @db.VarChar(30)
+  personneContact  String?     @map("personne_contact") @db.VarChar(100)
+  telephone        String?     @db.VarChar(30)
+  email            String?     @db.VarChar(150)
+  ville            String?     @db.VarChar(100)
+  idGestionnaire   Int         @map("id_gestionnaire")
+  gestionnaire     Utilisateur @relation(fields: [idGestionnaire], references: [id])
+
+  @@index([raisonSociale])
+  @@index([ville])
+  @@map("fournisseur")
+}
+
+model Categorie {
+  id             Int         @id @default(autoincrement()) @map("id_categorie")
+  nom            String      @unique @db.VarChar(100)
+  idGestionnaire Int         @map("id_gestionnaire")
+  gestionnaire   Utilisateur @relation(fields: [idGestionnaire], references: [id])
+
+  produits Produit[]
+
+  @@map("categorie")
+}
+
+model Produit {
+  id          Int            @id @default(autoincrement()) @map("id_produit")
+  reference   String         @unique @db.VarChar(50)
+  nom         String         @db.VarChar(150)
+  description String?        @db.Text
+  quantite    Int            @default(0) @map("quantite_disponible")
+  seuil       Int            @default(0) @map("seuil_alerte")
+  prix        Decimal        @default(0) @db.Decimal(12, 2)
+  idCategorie Int            @map("id_categorie")
+  idGestionnaire Int         @map("id_gestionnaire")
+
+  categorie   Categorie      @relation(fields: [idCategorie], references: [id])
+  gestionnaire Utilisateur   @relation(fields: [idGestionnaire], references: [id])
+
+  mouvements MouvementStock[]
+  alertes    Alerte[]
+  lignes     LigneInventaire[]
+
+  @@index([nom])
+  @@index([quantite, seuil])
+  @@fulltext([nom, description])
+  @@map("produit")
+}
+
+model MouvementStock {
+  id            Int            @id @default(autoincrement()) @map("id_mouvement")
+  date          DateTime       @default(now()) @map("date_mouvement")
+  quantite      Int
+  type          TypeMouvement  @map("type_mouvement")
+  idProduit     Int            @map("id_produit")
+  idGestionnaire Int           @map("id_gestionnaire")
+
+  produit      Produit      @relation(fields: [idProduit], references: [id])
+  gestionnaire Utilisateur  @relation(fields: [idGestionnaire], references: [id])
+
+  @@index([idProduit, date])
+  @@index([date])
+  @@map("mouvement_stock")
+}
+
+model Inventaire {
+  id             Int       @id @default(autoincrement()) @map("id_inventaire")
+  date           DateTime  @default(now()) @map("date_inventaire")
+  idSuperviseur  Int       @map("id_superviseur")
+
+  superviseur Utilisateur       @relation(fields: [idSuperviseur], references: [id])
+  lignes      LigneInventaire[]
+
+  @@index([date])
+  @@map("inventaire")
+}
+
+model LigneInventaire {
+  id               Int       @id @default(autoincrement()) @map("id_ligne_inventaire")
+  quantiteTheorique Int      @map("quantite_theorique")
+  quantiteReelle    Int      @map("quantite_reelle")
+  idInventaire      Int      @map("id_inventaire")
+  idProduit         Int      @map("id_produit")
+
+  inventaire Inventaire @relation(fields: [idInventaire], references: [id], onDelete: Cascade)
+  produit    Produit    @relation(fields: [idProduit], references: [id])
+
+  @@unique([idInventaire, idProduit])
+  @@map("ligne_inventaire")
+}
+
+model Alerte {
+  id        Int      @id @default(autoincrement()) @map("id_alerte")
+  date      DateTime @default(now()) @map("date_alerte")
+  message   String   @db.VarChar(255)
+  traitee   Boolean  @default(false)
+  idProduit Int      @map("id_produit")
+
+  produit Produit @relation(fields: [idProduit], references: [id], onDelete: Cascade)
+
+  @@index([idProduit, traitee])
+  @@index([traitee, date])
+  @@map("alerte")
+}
+
+model JournalAudit {
+  idAudit     Int      @id @default(autoincrement()) @map("id_audit")
+  dateHeure   DateTime @default(now()) @map("date_heure")
+  action      String   @db.VarChar(50)
+  module      String   @db.VarChar(50)
+  typeObjet   String   @db.VarChar(50) @map("type_objet")
+  idObjet     Int?     @map("id_objet")
+  description String   @db.VarChar(255)
+
+  @@index([module])
+  @@index([action])
+  @@index([dateHeure])
+  @@map("journal_audit")
+}

@@ -1,0 +1,104 @@
+/* Styles de la page de connexion */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeSide {
+  from { opacity: 0; transform: translateX(-28px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(1.05); }
+  to { opacity: 1; transform: none; }
+}
+
+.anim-form {
+  animation: fadeSide .85s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.anim-aside {
+  animation: zoomIn 1.1s cubic-bezier(.22, 1, .36, 1) .15s both;
+}
+
+.anim-up {
+  animation: fadeUp .8s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.anim-d1 { animation-delay: .14s; }
+.anim-d2 { animation-delay: .24s; }
+.anim-d3 { animation-delay: .34s; }
+.anim-d4 { animation-delay: .44s; }
+.anim-d5 { animation-delay: .54s; }
+
+.btn-login {
+  position: relative;
+  overflow: hidden;
+  transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s cubic-bezier(.22, 1, .36, 1), background-color .35s ease;
+}
+
+.btn-login::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, .38) 50%, transparent 80%);
+  transform: translateX(-130%);
+  transition: transform .75s cubic-bezier(.22, 1, .36, 1);
+}
+
+.btn-login:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 30px -14px rgba(22, 163, 74, .7);
+}
+
+.btn-login:hover::after {
+  transform: translateX(130%);
+}
+
+.btn-login:active {
+  transform: translateY(-1px) scale(.99);
+}
+
+#toggle {
+  transition: color .3s ease, transform .3s cubic-bezier(.22, 1, .36, 1);
+}
+
+#toggle:hover {
+  transform: scale(1.07);
+}
+
+.ul-link {
+  position: relative;
+  transition: color .3s ease;
+}
+
+.ul-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .4s cubic-bezier(.22, 1, .36, 1);
+}
+
+.ul-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
