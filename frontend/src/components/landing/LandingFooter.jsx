@@ -73,6 +73,17 @@ export default function LandingFooter() {
 
         <div className="mt-14 pt-5 border-t border-neutral-600 flex flex-col sm:flex-row gap-4 justify-between items-center text-xs">
           <p>Copyright StockPro © 2026. Tous droits réservés.</p>
+          <p>
+            Conçu par{' '}
+            <a
+              href="https://kouandzi-miette-junior-portofolio.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              className="underline hover:text-white"
+            >
+              KOUANDZI MIETTE Junior
+            </a>
+          </p>
           <div className="flex gap-3 text-white">
             <a href="#" aria-label="Facebook" className="h-4 w-4 rounded-sm bg-white block" />
             <a href="#" aria-label="Instagram" className="h-4 w-4 rounded-sm border-2 border-white block" />

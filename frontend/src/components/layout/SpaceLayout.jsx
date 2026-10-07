@@ -121,6 +121,17 @@ export default function SpaceLayout({ role }) {
               <p>
                 © {new Date().getFullYear()} StockPro · {space.label}
               </p>
+              <p>
+                Conçu par{' '}
+                <a
+                  href="https://kouandzi-miette-junior-portofolio.vercel.app/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline hover:opacity-80"
+                >
+                  KOUANDZI MIETTE Junior
+                </a>
+              </p>
             </div>
           </footer>
         </div>
