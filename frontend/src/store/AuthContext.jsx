@@ -2,12 +2,6 @@ import { createContext, useContext, useState } from 'react'
 import { api, clearToken, getToken, setToken } from '../lib/api'
 import { SPACES } from '../data/navigation'
 
-/*
- * Session de l'utilisateur connecté.
- * La connexion passe par l'API : POST /api/auth/login renvoie un jeton
- * conservé dans le localStorage. Sans identifiants, le compte de
- * démonstration de l'espace demandé est utilisé.
- */
 
 export const DEMO_PASSWORD = 'demo1234'
 
@@ -17,7 +11,6 @@ const AuthContext = createContext(null)
 const readStoredUser = () => {
   try {
     const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
-    // ancienne clé d'espace conservée en localStorage : superviseur
     return data?.role === 'proprietaire' ? { ...data, role: 'superviseur' } : data
   } catch {
     return null
@@ -34,7 +27,6 @@ export function AuthProvider({ children }) {
       motDePasse: credentials.motDePasse || DEMO_PASSWORD,
     })
 
-    // L'espace est déduit du rôle stocké en base : aucun choix d'acteur côté client.
     const account = { nom: compte.nom, email: compte.email, role: compte.espace }
     setToken(token)
     setUser(account)
